@@ -1,0 +1,42 @@
+{
+  "name": "addonova",
+  "version": "1.0.0",
+  "description": "Web Extension Framework",
+  "type": "module",
+  "bin": {
+    "addonova": "./bin/index.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./*": "./src/*.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "template/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webextension",
+    "browser-extension",
+    "chrome-extension",
+    "firefox-addon",
+    "scaffold",
+    "cli"
+  ],
+  "license": "ISC",
+  "author": "Hemanta gayen",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-hemu/addonova.git"
+  },
+  "homepage": "https://github.com/code-hemu/addonova#readme",
+  "bugs": {
+    "url": "https://github.com/code-hemu/addonova/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
