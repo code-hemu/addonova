@@ -2,7 +2,7 @@
 
 [![Addonova Social Banner](https://raw.githubusercontent.com/code-hemu/addonova/refs/heads/main/docs/assets/capture.jpg)](https://github.com/code-hemu/addonova)
 
-WebExtension framework for scaffolding and building cross-browser browser extensions.
+Addonova is a framework that allows developers to build extensions for multiple browsers. Developers can easily build, test, and manage extensions.
 
 ## Quick Start
 
