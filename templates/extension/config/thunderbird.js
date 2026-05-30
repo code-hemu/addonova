@@ -1,7 +1,8 @@
 export default {
   js: {
     entry: {
-      '': ['src/js/background.js', 'src/js/popup.js'],
+      '': ['src/js/background.js'],
+      'data/interface': ['src/js/popup.js'],
     },
     filename: '[name]',
     minify: true,
@@ -9,7 +10,7 @@ export default {
   },
   css: {
     entry: {
-      '': ['src/css/popup.css'],
+      'data/interface': ['src/css/popup.css'],
     },
     filename: '[name]',
     minify: true,
@@ -17,13 +18,13 @@ export default {
   },
   html: {
     entry: {
-      '': ['src/html/popup.html'],
+      'data/interface': ['src/html/popup.html'],
     },
     filename: '[name]',
   },
   assets: {
     entry: {
-      '': ['src/assets/**/*'],
+      'data/icons': ['src/assets/icons'],
     },
   },
 };

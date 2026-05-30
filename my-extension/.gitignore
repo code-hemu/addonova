@@ -1,6 +1,0 @@
-node_modules/
-.output/
-web-ext-artifacts/
-*.zip
-*.xpi
-.DS_Store

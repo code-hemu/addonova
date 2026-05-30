@@ -30,6 +30,6 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "addonova": "^1.0.0"
+    "addonova": "^1.0.3"
   }
 }

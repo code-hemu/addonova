@@ -19,10 +19,11 @@
     "templates/"
   ],
   "dependencies": {
-    "@craftamap/esbuild-plugin-html": "^0.9.0",
     "chokidar": "^5.0.0",
     "esbuild": "^0.27.3",
     "globby": "^16.1.0",
+    "html-minifier-terser": "^7.2.0",
+    "htmlhint": "^1.9.2",
     "web-ext": "^10.3.0",
     "yazl": "^3.3.1"
   },

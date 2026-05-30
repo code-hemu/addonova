@@ -11,18 +11,3 @@ const LINKS = {
     "youtube": "https://www.youtube.com/@CodeHemu",
     "twitter": "https://x.com/CodeHemu"
 };
-
-const DEBOUNCE = (callback, delay) => {
-  if (typeof callback !== "function") {
-    return false;
-  }
-
-  let timer;
-  return function(...args) {
-    const context = this;
-    clearTimeout(timer);
-    timer = setTimeout(function() {
-      callback.apply(context, args);
-    }, delay);
-  };
-};
