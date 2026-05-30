@@ -131,10 +131,10 @@ This is my extension description.
 Run the interactive message manager from a generated project:
 
 ```bash
-node node_modules/addonova/src/tools/translate.js
+npm run tool
 ```
 
-Or use the browser-based i18n tools UI:
+Or use the i18n tools UI:
 
 ```bash
 npx addonova tool
