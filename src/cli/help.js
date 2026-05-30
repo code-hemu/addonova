@@ -6,6 +6,7 @@ export function printHelp() {
     npx addonova init <my-extension>   Scaffold a new extension project
     npx addonova build [options]       Build the extension
     npx addonova zip                   Create release zip bundles
+    npx addonova tool                  Open the helping tools UI in a browser
     npx addonova --help                Show this help
 
   Build options:

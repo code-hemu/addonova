@@ -25,11 +25,12 @@
     "debug:firefox": "addonova build --firefox --debug",
     "debug:thunderbird": "addonova build --thunderbird --debug",
     "debug:naver": "addonova build --naver --debug",
-    "dev": "addonova build --all --debug --watch --port=9222",
+    "dev": "addonova build --all --debug --watch",
+    "tool": "addonova tool",
     "zip": "addonova zip",
     "test": "node --test"
   },
   "devDependencies": {
-    "addonova": "^1.0.3"
+    "addonova": "^1.0.4"
   }
 }

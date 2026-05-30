@@ -28,6 +28,7 @@ npm run release
 | `addonova init <name>` | Scaffold a new extension project |
 | `addonova build [options]` | Build the current extension project |
 | `addonova zip` | Create release zip bundles |
+| `addonova tool` | Open the i18n tools UI in a browser |
 | `addonova --help` | Show help |
 
 ## Build Scripts
@@ -63,6 +64,7 @@ npx addonova build --all --release
 npx addonova build --chrome --debug
 npx addonova build --all --debug --watch
 npx addonova zip
+npx addonova tool
 ```
 
 ## Build Options
@@ -131,6 +133,16 @@ Run the interactive message manager from a generated project:
 ```bash
 node node_modules/addonova/src/tools/translate.js
 ```
+
+Or use the browser-based i18n tools UI:
+
+```bash
+npx addonova tool
+```
+
+This opens a full UI at `http://localhost:9876` with:
+- **Translate tab** — view all locale messages, add new messages with auto-translation, delete messages
+- **JSON → i18n tab** — drag-and-drop a `messages.json` file to convert to `.i18n` format
 
 ## Development
 

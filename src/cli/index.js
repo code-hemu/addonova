@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 
 import { init } from '../commands/init.js';
+import { runTool } from '../commands/tool.js';
 import { printHelp } from './help.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,9 @@ export async function runCli(argv) {
   switch (command) {
     case 'init':
       await init(args);
+      break;
+    case 'tool':
+      await runTool();
       break;
     case 'build':
     case 'zip':
