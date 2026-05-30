@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addonova Tools</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; color: #222; min-height: 100vh; }
+.header { background: #1a73e8; color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+.header h1 { font-size: 20px; font-weight: 600; }
+.header span { font-size: 13px; opacity: 0.85; }
+.tabs { display: flex; background: #e8e8e8; border-bottom: 1px solid #ccc; }
+.tab { padding: 10px 24px; cursor: pointer; border: none; background: none; font-size: 14px; font-weight: 500; color: #555; border-bottom: 2px solid transparent; }
+.tab:hover { background: #ddd; }
+.tab.active { background: #fff; color: #1a73e8; border-bottom-color: #1a73e8; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px; display: none; }
+.container.active { display: block; }
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1); padding: 20px; margin-bottom: 16px; }
+.card h2 { font-size: 16px; margin-bottom: 12px; color: #333; }
+.form-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: flex-start; }
+label { font-size: 13px; font-weight: 500; color: #555; display: block; margin-bottom: 4px; }
+input[type=text], textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: inherit; }
+input[type=text]:focus, textarea:focus, select:focus { outline: none; border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,.2); }
+textarea { min-height: 80px; resize: vertical; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; }
+button { padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; background: #1a73e8; color: #fff; }
+button:hover { background: #1557b0; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button.danger { background: #d93025; }
+button.danger:hover { background: #b3261e; }
+button.outline { background: transparent; border: 1px solid #ccc; color: #333; }
+button.outline:hover { background: #f0f0f0; }
+.locale-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.locale-tag { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: #e8f0fe; color: #1a73e8; }
+.msg-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.msg-table th, .msg-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid #eee; }
+.msg-table th { font-weight: 600; color: #555; position: sticky; top: 0; background: #fafafa; }
+.msg-table tr:hover td { background: #f8f9ff; }
+.msg-table .key { font-family: monospace; font-weight: 600; color: #1a73e8; white-space: nowrap; }
+.msg-table .val { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.msg-table .del-btn { color: #d93025; cursor: pointer; font-size: 12px; padding: 2px 6px; border-radius: 4px; }
+.msg-table .del-btn:hover { background: #fce8e6; }
+.file-drop { border: 2px dashed #ccc; border-radius: 8px; padding: 32px; text-align: center; cursor: pointer; transition: .2s; }
+.file-drop:hover, .file-drop.dragover { border-color: #1a73e8; background: #f0f6ff; }
+.file-drop p { color: #888; font-size: 14px; }
+.file-drop .icon { font-size: 36px; margin-bottom: 8px; }
+.output-area { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 13px; white-space: pre-wrap; max-height: 300px; overflow: auto; margin-top: 10px; }
+.loading { opacity: .6; pointer-events: none; }
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc; border-top-color: #1a73e8; border-radius: 50%; animation: spin .6s linear infinite; margin-right: 6px; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 16px; border-radius: 6px; color: #fff; font-size: 13px; opacity: 0; transition: .3s; z-index: 100; }
+.toast.show { opacity: 1; }
+.toast.ok { background: #188038; }
+.toast.err { background: #d93025; }
+.col { flex: 1; min-width: 200px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛠 Addonova Tools</h1>
+  <span id="status">disconnected</span>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="translate">Translate</button>
+  <button class="tab" data-tab="json2i18n">JSON → i18n</button>
+</div>
+
+<div class="container active" id="tab-translate">
+  <div class="card">
+    <h2>Locales</h2>
+    <div class="locale-list" id="localeList"><span class="spinner"></span> loading...</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Add Message</h2>
+      <div class="form-row">
+        <div class="col">
+          <label>English text</label>
+          <input type="text" id="addMsgText" placeholder="Enter English message">
+        </div>
+        <div class="col">
+          <label>Message key (leave blank for auto)</label>
+          <input type="text" id="addMsgKey" placeholder="auto-generated">
+        </div>
+      </div>
+      <button id="addMsgBtn">Add & Translate</button>
+    </div>
+
+    <div class="card">
+      <h2>Delete Message</h2>
+      <div class="form-row">
+        <div class="col">
+          <label>Message key</label>
+          <input type="text" id="delMsgKey" placeholder="message_key">
+        </div>
+        <div class="col">
+          <label>Scope</label>
+          <select id="delMsgScope">
+            <option value="all">All locales</option>
+          </select>
+        </div>
+      </div>
+      <button class="danger" id="delMsgBtn">Delete</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h2 style="margin:0">Messages</h2>
+      <button class="outline" id="refreshMsgBtn" style="font-size:12px">Refresh</button>
+    </div>
+    <div id="msgViewer" style="max-height:400px;overflow:auto">
+      <div class="spinner"></div> loading...
+    </div>
+  </div>
+</div>
+
+<div class="container" id="tab-json2i18n">
+  <div class="grid2">
+    <div class="card">
+      <h2>Upload messages.json</h2>
+      <div class="file-drop" id="fileDrop">
+        <div class="icon">📄</div>
+        <p>Drop a <strong>messages.json</strong> file here or click to browse</p>
+      </div>
+      <input type="file" id="fileInput" accept=".json" style="display:none">
+      <div id="jsonPreview" class="output-area" style="display:none;margin-top:12px"></div>
+    </div>
+
+    <div class="card">
+      <h2>i18n Output</h2>
+      <button id="copyI18nBtn" style="margin-bottom:8px;font-size:12px" class="outline">📋 Copy</button>
+      <div id="i18nOutput" class="output-area">Upload a file to see the result</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const api = (path, opts = {}) =>
+  fetch(path, { headers: { 'Content-Type': 'application/json' }, ...opts })
+    .then(r => r.json())
+    .catch(() => ({ error: 'Network error' }));
+
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ── Tabs ──
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Locales ──
+async function loadLocales() {
+  const data = await api('/api/locales');
+  const list = document.getElementById('localeList');
+  const scope = document.getElementById('delMsgScope');
+
+  if (data.error) {
+    list.innerHTML = `<span style="color:#d93025">⚠ ${data.error}</span>`;
+    return;
+  }
+
+  list.innerHTML = (data.locales || []).map(l => `<span class="locale-tag">${l}</span>`).join('');
+
+  const current = scope.value;
+  scope.innerHTML = '<option value="all">All locales</option>'
+    + (data.locales || []).map(l => `<option value="${l}">${l}</option>`).join('');
+  if (current) scope.value = current;
+
+  return data;
+}
+
+// ── Messages table ──
+async function loadMessages() {
+  const el = document.getElementById('msgViewer');
+  const data = await api('/api/locales');
+
+  if (data.error) {
+    el.innerHTML = `<span style="color:#d93025">⚠ ${data.error}</span>`;
+    return;
+  }
+
+  if (!data.locales || !data.locales.length) {
+    el.innerHTML = '<span style="color:#888">No locale files found in src/_locales/</span>';
+    return;
+  }
+
+  const en = data.data['en'] || {};
+  const keys = Object.keys(en);
+
+  if (!keys.length) {
+    el.innerHTML = '<span style="color:#888">No messages found</span>';
+    return;
+  }
+
+  let html = '<table class="msg-table"><thead><tr><th>Key</th><th>English</th>';
+  for (const loc of data.locales) html += `<th>${loc}</th>`;
+  html += '<th></th></tr></thead><tbody>';
+
+  for (const key of keys) {
+    html += `<tr><td class="key">${key}</td>`;
+    html += `<td class="val">${esc(data.data.en[key] || '')}</td>`;
+    for (const loc of data.locales) {
+      html += `<td class="val">${esc(data.data[loc]?.[key] || '')}</td>`;
+    }
+    html += `<td><span class="del-btn" data-key="${key}">✕</span></td>`;
+    html += '</tr>';
+  }
+
+  html += '</tbody></table>';
+  el.innerHTML = html;
+
+  el.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const key = btn.dataset.key;
+      if (!confirm(`Delete "${key}" from all locales?`)) return;
+      const res = await api('/api/messages/delete', {
+        method: 'POST',
+        body: JSON.stringify({ messageId: key }),
+      });
+      if (res.error) { toast(res.error, 'err'); return; }
+      toast(`Deleted from ${res.deleted.length} locale(s)`);
+      loadMessages();
+    });
+  });
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ── Add message ──
+document.getElementById('addMsgBtn').addEventListener('click', async function () {
+  const message = document.getElementById('addMsgText').value.trim();
+  if (!message) { toast('Enter a message', 'err'); return; }
+  const customId = document.getElementById('addMsgKey').value.trim();
+
+  this.disabled = true;
+  this.innerHTML = '<span class="spinner"></span> Translating...';
+
+  const res = await api('/api/messages/add', {
+    method: 'POST',
+    body: JSON.stringify({ message, customId: customId || undefined }),
+  });
+
+  this.disabled = false;
+  this.textContent = 'Add & Translate';
+
+  if (res.error) { toast(res.error, 'err'); return; }
+  toast(`Added as "${res.messageId}" — translated to ${Object.keys(res.locales).length} locales`);
+  document.getElementById('addMsgText').value = '';
+  document.getElementById('addMsgKey').value = '';
+  loadMessages();
+  loadLocales();
+});
+
+// ── Delete message ──
+document.getElementById('delMsgBtn').addEventListener('click', async function () {
+  const messageId = document.getElementById('delMsgKey').value.trim();
+  if (!messageId) { toast('Enter message key', 'err'); return; }
+
+  const scope = document.getElementById('delMsgScope').value;
+  const targetLocale = scope === 'all' ? null : scope;
+  const label = targetLocale ? `"${targetLocale}"` : 'ALL locales';
+
+  if (!confirm(`Delete "${messageId}" from ${label}?`)) return;
+
+  this.disabled = true;
+  this.innerHTML = 'Deleting...';
+
+  const res = await api('/api/messages/delete', {
+    method: 'POST',
+    body: JSON.stringify({ messageId, targetLocale }),
+  });
+
+  this.disabled = false;
+  this.textContent = 'Delete';
+
+  if (res.error) { toast(res.error, 'err'); return; }
+  toast(`Deleted from ${res.deleted.length} locale(s)`);
+  document.getElementById('delMsgKey').value = '';
+  loadMessages();
+  loadLocales();
+});
+
+// ── Refresh ──
+document.getElementById('refreshMsgBtn').addEventListener('click', () => {
+  loadMessages();
+  loadLocales();
+});
+
+// ── JSON → i18n ──
+const fileDrop = document.getElementById('fileDrop');
+const fileInput = document.getElementById('fileInput');
+const jsonPreview = document.getElementById('jsonPreview');
+const i18nOutput = document.getElementById('i18nOutput');
+
+fileDrop.addEventListener('click', () => fileInput.click());
+
+fileDrop.addEventListener('dragover', e => {
+  e.preventDefault();
+  fileDrop.classList.add('dragover');
+});
+fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+fileDrop.addEventListener('drop', e => {
+  e.preventDefault();
+  fileDrop.classList.remove('dragover');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) handleFile(fileInput.files[0]);
+});
+
+function handleFile(file) {
+  if (!file.name.endsWith('.json')) {
+    toast('Please select a .json file', 'err');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const json = JSON.parse(e.target.result);
+      jsonPreview.textContent = JSON.stringify(json, null, 2);
+      jsonPreview.style.display = 'block';
+
+      const res = await api('/api/json2i18n', {
+        method: 'POST',
+        body: JSON.stringify({ json }),
+      });
+
+      if (res.error) { toast(res.error, 'err'); return; }
+      i18nOutput.textContent = res.i18n;
+    } catch {
+      toast('Invalid JSON file', 'err');
+    }
+  };
+  reader.readAsText(file);
+}
+
+document.getElementById('copyI18nBtn').addEventListener('click', () => {
+  const text = i18nOutput.textContent;
+  if (!text || text === 'Upload a file to see the result') return;
+  navigator.clipboard.writeText(text).then(() => toast('Copied!'));
+});
+
+// ── Status ──
+(async function init() {
+  const data = await api('/api/locales');
+  const status = document.getElementById('status');
+  if (data.error) {
+    status.textContent = '⚠ server error';
+    status.style.color = '#ffbb00';
+    return;
+  }
+  status.textContent = `✔ ${data.locales.length} locales`;
+  status.style.color = '#a8e6a3';
+
+  if (data.locales.length) {
+    loadMessages();
+  } else {
+    document.getElementById('msgViewer').innerHTML =
+      '<span style="color:#888">No locale files found in src/_locales/</span>';
+  }
+})();
+</script>
+</body>
+</html>

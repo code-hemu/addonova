@@ -1,0 +1,10 @@
+@extensionName
+Test Extension
+
+@longMessage
+This is a long message
+that spans multiple lines
+and should be handled correctly
+
+@shortMsg
+Hi

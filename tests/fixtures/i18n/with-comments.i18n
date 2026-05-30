@@ -1,0 +1,14 @@
+@greeting
+Hello
+
+# This is a comment line
+# It should be ignored during parsing
+
+@farewell
+Goodbye
+
+# Another comment
+# Multiple lines of comments
+
+@question
+How are you?

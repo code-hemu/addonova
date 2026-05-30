@@ -52,7 +52,6 @@ npm run debug:thunderbird
 npm run debug:naver
 
 npm run dev
-npm run watch
 npm run zip
 npm test
 ```

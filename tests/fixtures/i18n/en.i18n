@@ -1,0 +1,11 @@
+@extensionName
+Test Extension
+
+@extensionDescription
+A test extension for the addonova build system
+
+@buttonLabel
+Click Me
+
+@welcomeMessage
+Welcome to the test extension!

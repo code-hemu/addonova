@@ -1,0 +1,10 @@
+{
+  "name": "simple-extension",
+  "version": "0.1.0",
+  "description": "Minimal test extension",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "devDependencies": {
+    "addonova": "^1.0.3"
+  }
+}

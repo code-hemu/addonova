@@ -1,0 +1,11 @@
+@extensionName
+Extension de Test
+
+@extensionDescription
+Une extension de test pour le système de construction addonova
+
+@buttonLabel
+Cliquez-moi
+
+@welcomeMessage
+Bienvenue dans l'extension de test !

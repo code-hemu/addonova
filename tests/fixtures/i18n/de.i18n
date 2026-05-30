@@ -1,0 +1,11 @@
+@extensionName
+Test-Erweiterung
+
+@extensionDescription
+Eine Test-Erweiterung für das addonova-Buildsystem
+
+@buttonLabel
+Klick mich
+
+@welcomeMessage
+Willkommen bei der Test-Erweiterung!

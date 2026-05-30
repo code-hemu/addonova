@@ -1,6 +1,6 @@
 {
   "name": "addonova",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Web Extension Framework",
   "type": "module",
   "scripts": {
