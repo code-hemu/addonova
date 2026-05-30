@@ -10,6 +10,6 @@ export function printHelp() {
 
   Build options:
     --all, --chrome, --firefox, --edge, --opera, --naver, --thunderbird
-    --release, --debug, --watch, --test, --version=x.x.x
+    --release, --debug, --watch, --open, --test, --version=x.x.x
   `);
 }

@@ -20,6 +20,10 @@ test('package metadata points to the CLI entry file', async () => {
   await access(resolve(rootDir, packageJson.bin.addonova));
 });
 
+test('legacy CLI entry shim exists for older npx cache metadata', async () => {
+  await access(resolve(rootDir, 'bin/index.js'));
+});
+
 test('package publish list includes the extension templates folder', async () => {
   const packageJson = JSON.parse(
     await readFile(resolve(rootDir, 'package.json'), 'utf8')

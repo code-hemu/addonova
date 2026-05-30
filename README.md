@@ -49,6 +49,7 @@ npm run debug:firefox
 npm run debug:thunderbird
 npm run debug:naver
 
+npm run dev
 npm run watch
 npm run zip
 npm test
@@ -76,35 +77,24 @@ npx addonova zip
 | `--thunderbird` | Build Thunderbird target |
 | `--release` | Create release build |
 | `--debug` | Create debug build |
-| `--watch` | Rebuild when files change |
+| `--watch` | Rebuild when files change and reload opened extensions |
+| `--open` | Open a browser with the debug extension loaded |
 | `--test` | Build test version |
 | `--version=x.x.x` | Append version to output zip names |
 
-## Package Structure
+## Dev Mode
 
-```txt
-addonova/
-|-- bin/
-|   `-- addonova.js
-|-- src/
-|   |-- build/
-|   |-- cli/
-|   |-- commands/
-|   |-- tools/
-|   |-- utils/
-|   `-- index.js
-|-- templates/
-|   `-- extension/
-|-- docs/
-|   `-- assets/
-|-- tests/
-|   |-- build/
-|   |-- commands/
-|   |-- fixtures/
-|   `-- package.test.js
-|-- package.json
-`-- README.md
+```bash
+npm run dev
 ```
+
+Dev mode runs:
+
+```bash
+addonova build --all --debug --watch
+```
+
+Addonova opens an isolated browser profile, loads the unpacked debug extension from `.output/debug/<browser>`, watches source files, rebuilds changed assets, and reloads the extension when the built files change.
 
 ## Generated Extension Structure
 
@@ -130,6 +120,7 @@ Locale files use the `.i18n` format:
 ```txt
 @extensionName
 My Extension
+
 @extensionDescription
 This is my extension description.
 ```

@@ -17,5 +17,7 @@ test('build CLI prints help', async () => {
   assert.match(stdout, /WebExtension build utility/);
   assert.match(stdout, /--chrome\s+Google Chrome/);
   assert.match(stdout, /--firefox\s+Mozilla Firefox/);
+  assert.match(stdout, /--watch\s+Watch for changes and reload opened extensions/);
+  assert.match(stdout, /--open\s+Open a browser/);
   assert.match(stdout, /--version=1\.2\.3/);
 });

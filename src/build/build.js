@@ -8,6 +8,7 @@ import bundleLocales from './bundle-locales.js';
 import bundleManifest from './bundle-manifest.js';
 import assetsCopy from './copy.js';
 import zip from './zip.js';
+import { startBrowserRunners, stopBrowserRunners } from './browser.js';
 import {log} from './utils.js';
 import {runTasks} from './task.js';
 
@@ -53,7 +54,9 @@ const settings = {
     isDebug: args.includes('--debug'),
     isTest: args.includes('--test'),
     logInfo: args.includes('--log-info'),
-    logWarn: args.includes('--log-warn')
+    logWarn: args.includes('--log-warn'),
+    shouldRunBrowser: args.includes('--open') || (args.includes('--watch') && args.includes('--debug')),
+    args,
 }
 
 const standardTask = [
@@ -77,7 +80,18 @@ const buildTask = [
     try {
         await runTasks(settings.isDebug ? standardTask : buildTask, settings);
         if (settings.isWatch) {
-            standardTask.forEach((task) => task.watch(settings.platforms, settings.isDebug));
+            if (settings.shouldRunBrowser) {
+                await startBrowserRunners(settings);
+                process.on('exit', () => stopBrowserRunners(settings));
+                process.on('SIGINT', () => {
+                    stopBrowserRunners(settings);
+                    process.exit(130);
+                });
+            }
+            standardTask.forEach((task) => task.watch(
+                settings.platforms,
+                settings.isDebug
+            ));
             log.ok('[^_^] Watching...');
         } else {
             log.ok('MISSION PASSED! RESPECT +');

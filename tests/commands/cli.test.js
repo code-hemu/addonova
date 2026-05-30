@@ -17,4 +17,5 @@ test('addonova CLI prints help', async () => {
   assert.match(stdout, /npx addonova init <my-extension>/);
   assert.match(stdout, /npx addonova build \[options\]/);
   assert.match(stdout, /npx addonova zip/);
+  assert.match(stdout, /--open/);
 });

@@ -21,10 +21,11 @@ function printHelp() {
         'Other parameters:',
         '  --release       Build release version (default)',
         '  --debug         Build debug version',
-        '  --watch         Watch for changes and rebuild automatically',
+        '  --watch         Watch for changes and reload opened extensions',
         '  --log-info      Log info messages',
         '  --log-warn      Log warning messages',
         '  --test          Build test version (for testing in development environment)',
+        '  --open          Open a browser with the debug extension loaded',
         '  --version=1.2.3 Append version to output file name (e.g. extension-name-chrome-1.2.3.zip)',
         '  -h, --help      Show this help message',
     ].join('\n'));
@@ -57,6 +58,7 @@ function validateArguments(args) {
         '--log-info',
         '--log-warn',
         '--test',
+        '--open',
         '--version=*',
         '--help',
         '-h'
